@@ -1,41 +1,35 @@
-void reverse(char* begin, char* end) {
-    char temp;
-    while (begin < end) {
-        temp = *begin;
-        *begin++ = *end;
-        *end-- = temp;
-    }
-}
-char* reverseWords(char* s) {
-    while (*s == ' ') {
-        s++;
-    }
-    int len = strlen(s);
-    while (len > 0 && s[len - 1] == ' ') {
-        s[--len] = '\0';
-    }
-
-    char* word_begin = s;
-    char* temp = s;
-    while (*temp) {
-        temp++;
-        if (*temp == ' ' || *temp == '\0') {
-            reverse(word_begin, temp - 1);
-            word_begin = temp + 1;
-        }
-    }
-
-    reverse(s, temp - 1);
-
-    char* dest = s;
-    temp = s;
-    while (*temp) {
-        if (*temp != ' ' || (*(temp + 1) != ' ' && *(temp + 1) != '\0')) {
-            *dest++ = *temp;
-        }
-        temp++;
-    }
-    *dest = '\0';
-
-    return s;
-}
+  
+#include <stdio.h>  
+  
+void bestBuySellDays(int prices[], int n, int *buy, int *sell) {  
+    int minPriceIndex = 0;  
+    int maxProfit = 0;  
+    *buy = 0;  
+    *sell = 0;  
+  
+    for (int i = 1; i < n; i++) {  
+        if (prices[i] < prices[minPriceIndex]) {  
+            minPriceIndex = i;  
+        }  
+        if (prices[i] - prices[minPriceIndex] > maxProfit) {  
+            maxProfit = prices[i] - prices[minPriceIndex];  
+            *buy = minPriceIndex;  
+            *sell = i;  
+        }  
+    }  
+}  
+  
+int main() {  
+    int prices[] = {7, 1, 5, 3, 6, 4};  
+    int n = sizeof(prices) / sizeof(prices[0]);  
+    int buy, sell;  
+  
+    bestBuySellDays(prices, n, &buy, &sell);  
+    printf("Best day to buy: %d\nBest day to sell: %d\n", buy, sell);  
+  
+    return 0;  
+}  
+  
+output:  
+Best day to buy: 1  
+Best day to sell: 4 
